@@ -17,55 +17,57 @@
  * @author Naoki Akai
  ****************************************************************************/
 
-#include <rclcpp/rclcpp.hpp>
-#include <sensor_msgs/msg/laser_scan.hpp>
-#include <sensor_msgs/msg/point_cloud.hpp>
-#include <geometry_msgs/msg/point32.hpp>
+#include <ros/ros.h>
+#include <sensor_msgs/LaserScan.h>
+#include <sensor_msgs/PointCloud.h>
 
-class Scan2PC : public rclcpp::Node {
+class Scan2PC {
 private:
-    std::string scan_name_;
-    std::string pc_name_;
-    rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr scan_sub_;
-    rclcpp::Publisher<sensor_msgs::msg::PointCloud>::SharedPtr pc_pub_;
+    ros::NodeHandle nh_;
+    std::string scanName_, pcName_;
+    ros::Subscriber scanSub_;
+    ros::Publisher pcPub_;
 
 public:
-    Scan2PC() : rclcpp::Node("scan2pc") {
-        scan_name_ = this->declare_parameter<std::string>(
-            "scan_name", "/scan");
-        pc_name_ = this->declare_parameter<std::string>(
-            "pc_name", "/scan_point_cloud");
+    Scan2PC(void):
+        nh_("~"),
+        scanName_("/scan"),
+        pcName_("/scan_point_cloud")
+    {
+        nh_.param("scan_name", scanName_, scanName_);
+        nh_.param("pc_name", pcName_, pcName_);
 
-        scan_sub_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
-            scan_name_, 10,
-            std::bind(&Scan2PC::scanCB, this, std::placeholders::_1));
-        pc_pub_ = this->create_publisher<sensor_msgs::msg::PointCloud>(
-            pc_name_, 10);
+        scanSub_ = nh_.subscribe(scanName_, 1, &Scan2PC::scanCB, this);
+        pcPub_ = nh_.advertise<sensor_msgs::PointCloud>(pcName_, 1);
     }
 
-    void scanCB(const sensor_msgs::msg::LaserScan::SharedPtr msg) {
-        sensor_msgs::msg::PointCloud pc;
+    void spin(void) {
+        ros::spin();
+    }
+
+    void scanCB(const sensor_msgs::LaserScan::ConstPtr &msg) {
+        sensor_msgs::PointCloud pc;
         pc.header = msg->header;
-        for (size_t i = 0; i < msg->ranges.size(); ++i) {
+        for (int i = 0; i < (int)msg->ranges.size(); ++i) {
             double r = msg->ranges[i];
             if (r <= msg->range_min || msg->range_max <= r)
                 continue;
-            double t = msg->angle_min + static_cast<double>(i) * msg->angle_increment;
+            double t = msg->angle_min + (double)i * msg->angle_increment;
             double x = r * cos(t);
             double y = r * sin(t);
-            geometry_msgs::msg::Point32 p;
-            p.x = static_cast<float>(x);
-            p.y = static_cast<float>(y);
-            p.z = 0.0f;
+            geometry_msgs::Point32 p;
+            p.x = x;
+            p.y = y;
+            p.z = 0.0;
             pc.points.push_back(p);
         }
-        pc_pub_->publish(pc);
+        pcPub_.publish(pc);
     }
-};
+}; // class Scan2PC
 
 int main(int argc, char **argv) {
-    rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<Scan2PC>());
-    rclcpp::shutdown();
+    ros::init(argc, argv, "scan2pc");
+    Scan2PC node;
+    node.spin();
     return 0;
 }

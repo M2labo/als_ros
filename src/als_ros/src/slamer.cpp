@@ -17,24 +17,22 @@
  * @author Naoki Akai
  ****************************************************************************/
 
-#include <rclcpp/rclcpp.hpp>
+#include <ros/ros.h>
 #include <als_ros/SLAMER.h>
 
 int main(int argc, char **argv) {
-    if (argc < 2) {
-        RCLCPP_ERROR(rclcpp::get_logger("slamer"),
-                     "argv[1] must be a yaml file for a indoor semantic map (ism).");
-        return 1;
+    if (argv[1] == NULL) {
+        ROS_ERROR("argv[1] must be a yaml file for a indoor semantic map (ism).");
+        exit(1);
     }
 
-    rclcpp::init(argc, argv);
-    auto node = rclcpp::Node::make_shared("slamer");
+    ros::init(argc, argv, "slamer");
     als_ros::SLAMER slamer(argv[1]);
     double localizationHz = slamer.getLocalizationHz();
-    rclcpp::Rate loopRate(localizationHz);
+    ros::Rate loopRate(localizationHz);
 
-    while (rclcpp::ok()) {
-        rclcpp::spin_some(node);
+    while (ros::ok()) {
+        ros::spinOnce();
         slamer.updateParticlesByMotionModel();
         slamer.setCanUpdateScan(false);
         slamer.calculateLikelihoodsByMeasurementModel();
@@ -55,6 +53,5 @@ int main(int argc, char **argv) {
         loopRate.sleep();
     }
 
-    rclcpp::shutdown();
     return 0;
 }
