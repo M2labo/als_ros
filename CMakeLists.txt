@@ -37,4 +37,12 @@ install(TARGETS mcl
   RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
+install(
+  DIRECTORY
+  launch 
+  config
+  map
+  DESTINATION share/${PROJECT_NAME}/
+)
+
 ament_package()
