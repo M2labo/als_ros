@@ -22,9 +22,8 @@
 
 int main(int argc, char **argv) {
     rclcpp::init(argc, argv);
-    auto node = rclcpp::Node::make_shared("mcl");
-
     als_ros::MCL mcl;
+    auto node = mcl.getNode();
     double localizationHz = mcl.getLocalizationHz();
     rclcpp::Rate loopRate(localizationHz);
 
