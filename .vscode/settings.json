@@ -1,0 +1,20 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/mori/livox_ws/install/livox_ros_driver2/lib/python3.12/site-packages",
+        "/home/mori/septentrio_ws/install/septentrio_gnss_driver/lib/python3.12/site-packages",
+        "/home/mori/mobile_mover_ws/install/mm_system_monitor/lib/python3.12/site-packages",
+        "/home/mori/mobile_mover_ws/install/m2_msgs/lib/python3.12/site-packages",
+        "/home/mori/mobile_mover_ws/build/compressed_camera",
+        "/home/mori/mobile_mover_ws/install/compressed_camera/lib/python3.12/site-packages",
+        "/opt/ros/jazzy/lib/python3.12/site-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/mori/livox_ws/install/livox_ros_driver2/lib/python3.12/site-packages",
+        "/home/mori/septentrio_ws/install/septentrio_gnss_driver/lib/python3.12/site-packages",
+        "/home/mori/mobile_mover_ws/install/mm_system_monitor/lib/python3.12/site-packages",
+        "/home/mori/mobile_mover_ws/install/m2_msgs/lib/python3.12/site-packages",
+        "/home/mori/mobile_mover_ws/build/compressed_camera",
+        "/home/mori/mobile_mover_ws/install/compressed_camera/lib/python3.12/site-packages",
+        "/opt/ros/jazzy/lib/python3.12/site-packages"
+    ]
+}

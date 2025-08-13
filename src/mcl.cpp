@@ -17,18 +17,18 @@
  * @author Naoki Akai
  ****************************************************************************/
 
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 #include <als_ros/MCL.h>
 
 int main(int argc, char **argv) {
-    ros::init(argc, argv, "mcl");
-
+    rclcpp::init(argc, argv);
     als_ros::MCL mcl;
+    auto node = mcl.getNode();
     double localizationHz = mcl.getLocalizationHz();
-    ros::Rate loopRate(localizationHz);
+    rclcpp::Rate loopRate(localizationHz);
 
-    while (ros::ok()) {
-        ros::spinOnce();
+    while (rclcpp::ok()) {
+        rclcpp::spin_some(node);
         mcl.updateParticlesByMotionModel();
         mcl.setCanUpdateScan(false);
         mcl.calculateLikelihoodsByMeasurementModel();
@@ -48,5 +48,6 @@ int main(int argc, char **argv) {
         loopRate.sleep();
     }
 
+    rclcpp::shutdown();
     return 0;
 }

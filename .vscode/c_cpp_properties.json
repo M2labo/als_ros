@@ -1,0 +1,32 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/mori/livox_ws/install/livox_ros_driver2/include/**",
+        "/home/mori/septentrio_ws/install/septentrio_gnss_driver/include/**",
+        "/home/mori/mobile_mover_ws/install/septentrio_gnss_bringup/include/**",
+        "/home/mori/mobile_mover_ws/install/nav2_through_poses_navigator/include/**",
+        "/home/mori/mobile_mover_ws/install/nav2_straightline_planner/include/**",
+        "/home/mori/mobile_mover_ws/install/nav2_simple_path_tracking_controller/include/**",
+        "/home/mori/mobile_mover_ws/install/mm_system_monitor/include/**",
+        "/home/mori/mobile_mover_ws/install/mm_can_bridge/include/**",
+        "/home/mori/mobile_mover_ws/install/m2_waypoint_follower/include/**",
+        "/home/mori/mobile_mover_ws/install/auto_drive_manager_cpp/include/**",
+        "/home/mori/mobile_mover_ws/install/livox_to_pointcloud2/include/**",
+        "/opt/ros/jazzy/include/**",
+        "/home/mori/mobile_mover_ws/src/als_ros/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
